@@ -33,8 +33,6 @@ df["anio"] = df["fecha"].dt.year
 df["mes_num"] = df["fecha"].dt.month
 df["dia"] = df["fecha"].dt.day
 
-df = df.drop(columns=["fecha"])
-
 
 cols = ["bien_juridico_afectado", "tipo_delito", "subtipo_delito", "modalidad"]
 #esto como es puro text pues ya lo pongo en minusculas y sin espacios al inicio o final
@@ -52,7 +50,7 @@ df = df[df["incidencia_delictiva"] > 0]
 df["incidencia_delictiva"] = df["incidencia_delictiva"].astype(int)
 
 
-df.to_csv('practica1/INM_2025.csv', index=False)
+df.to_csv('practica1/INM_2025_limpia.csv', index=False)
 
 #en resumen converti la fecha en 3 columnas debido a que pues para mi es necesario pues si quiero buscar
 #por mes si quiero saber de alguna entidad el mes que tuvo mas incidencia delictiva por eso lo hice para que sea mas facil
