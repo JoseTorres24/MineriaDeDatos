@@ -33,6 +33,7 @@ df["anio"] = df["fecha"].dt.year
 df["mes_num"] = df["fecha"].dt.month
 df["dia"] = df["fecha"].dt.day
 
+df = df.drop(columns=["fecha"])
 
 cols = ["bien_juridico_afectado", "tipo_delito", "subtipo_delito", "modalidad"]
 #esto como es puro text pues ya lo pongo en minusculas y sin espacios al inicio o final
