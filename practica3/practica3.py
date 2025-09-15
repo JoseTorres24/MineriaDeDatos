@@ -15,7 +15,7 @@ plt.xlabel('Año')
 plt.ylabel('Incidencia Delictiva')
 plt.legend(title='Tipo de Delito', bbox_to_anchor=(1.05, 1), loc='upper left')
 plt.tight_layout()
-plt.savefig('scatter_plot_incidencia_tipo_delito.png')
+#plt.savefig('scatter_plot_incidencia_tipo_delito.png')
 plt.show()
 
 
@@ -26,19 +26,19 @@ plt.title('Histograma de Incidencia Delictiva por Año')
 plt.xlabel('Año')
 plt.ylabel('Incidencia Delictiva')
 plt.tight_layout()
-plt.savefig('histograma_incidencia_anio.png')
+#plt.savefig('histograma_incidencia_anio.png')
 plt.show()
 
 #
 #podemos hacer un boxplot para ver la distribucion de la incidencia delictiva por entidad federativa
-plt.figure(figsize=(32, 24))
+plt.figure(figsize=(60, 60))
 sns.boxplot(x='entidad_federativa', y='incidencia_delictiva', data=df)
 plt.title('Distribución de Incidencia Delictiva por Entidad Federativa')
 plt.xlabel('Entidad Federativa')
 plt.ylabel('Incidencia Delictiva')
 plt.xticks(rotation=90)
 plt.tight_layout()
-plt.savefig('boxplot_incidencia_entidad_federativa.png')
+plt.savefig('practica3/boxplot_incidencia_entidad_federativa.png')
 plt.show()
 #tambien podemos usar pie dramagm para realizar la proporcion de incidencia delictiva por entidad federativa
 incidencia_por_entidad = df.groupby('entidad_federativa')['incidencia_delictiva'].sum().sort_values(ascending=False) # aqui hacemos uso de groupby para agrupar por entidad federativa y sumar la incidencia delictiva
@@ -47,5 +47,24 @@ plt.pie(incidencia_por_entidad, labels=incidencia_por_entidad.index, autopct='%1
 plt.title('Proporción de Incidencia Delictiva por Entidad Federativa')
 plt.axis('equal')
 plt.tight_layout()
-plt.savefig('graficadepastel_incidencia_entidad_federativa.png')
+#plt.savefig('graficadepastel_incidencia_entidad_federativa.png')
+plt.show()
+#podemos hacer un line plot para ver la evolucion de la incidencia delictiva a lo largo de los anios por tipo de delito
+plt.figure(figsize=(20, 10))
+sns.lineplot(x='anio', y='incidencia_delictiva', data=df, marker='o')
+plt.title('Evolución de la Incidencia Delictiva en el tiempo')
+plt.tight_layout()
+plt.savefig("practica3/lineplot_incidencia.png")
+plt.show()
+
+#podemos hacer un heatmap para ver la correlacion entre anio, mes y la incidencia delictiva
+# Primero, creamos una tabla pivote
+pivot_table = df.pivot_table(values='incidencia_delictiva', index='mes_num', columns='anio', aggfunc='sum', fill_value=0)
+plt.figure(figsize=(20, 10))
+sns.heatmap(pivot_table, annot=True, fmt=".0f", cmap='YlGnBu')
+plt.title('Mapa de Calor de Incidencia Delictiva por Mes y Año')
+plt.xlabel('Año')
+plt.ylabel('Mes')
+plt.tight_layout()
+#plt.savefig('heatmap_incidencia_mes_anio.png')
 plt.show()
