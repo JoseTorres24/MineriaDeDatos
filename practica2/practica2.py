@@ -1,5 +1,4 @@
 import pandas as pd
-import matplotlib.pyplot as plt
 
 df = pd.read_csv('practica1/INM_2025_limpia.csv')
 #realmente es dificil describir y desmenuzar la tabla en varias entidades para asi agruparlas y realizar juegos con la informacion mas a detalle
