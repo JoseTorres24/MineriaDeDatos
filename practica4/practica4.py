@@ -6,6 +6,8 @@ df = pd.read_csv("practica1/INM_2025_limpia.csv")
 # ANOVA, Levene, Kruskal-Wallis y post-hoc Dunn test para "bien_juridico_afectado" y "incidencia_delictiva"
 groups = [g["incidencia_delictiva"].values for _, g in df.groupby("bien_juridico_afectado")]
 # aqui hacemos uso de groupby para agrupar por bien juridico afectado y obtener los valores de incidencia delictiva para cada grupo
+# EL grupo es una lista de arrays, cada array contiene los valores de incidencia delictiva para un bien juridico afectado
+# es por eso que usamos el * para desempaquetar la lista de arrays y pasarlos como argumentos a las funciones de scipy stats
 anova_res = stats.f_oneway(*groups)
 print("ANOVA:", anova_res)
 
