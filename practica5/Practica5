@@ -1,0 +1,51 @@
+import os
+import matplotlib.pyplot as plt
+import statsmodels.api as sm
+import pandas as pd
+from tabulate import tabulate
+
+# --- Funciones auxiliares ---
+def print_tabulate(df: pd.DataFrame):
+    print(tabulate(df, headers=df.columns, tablefmt="orgtbl"))
+
+def linear_regression(df: pd.DataFrame, x: str, y: str, entidad: str = None):
+    if entidad:
+        df = df[df["entidad_federativa"] == entidad]
+
+    # Aseguramos que X es numérico
+    X = pd.to_numeric(df[x], errors='coerce')
+    y_vals = df[y]
+
+    # Ordenar datos por X (para una gráfica limpia)
+    df_sorted = pd.DataFrame({x: X, y: y_vals}).sort_values(by=x)
+
+    # Crear modelo lineal
+    model = sm.OLS(df_sorted[y], sm.add_constant(df_sorted[x])).fit()
+    
+    # Mostrar resumen y R²
+    print(model.summary())
+    print(f"R² (coeficiente de determinación): {model.rsquared:.4f}")
+
+    # Graficar
+    plt.scatter(df_sorted[x], df_sorted[y], label="Datos reales")
+    plt.plot(df_sorted[x], model.fittedvalues, color="red", label=f"Regresión lineal (R²={model.rsquared:.2f})")
+    plt.xlabel(x)
+    plt.ylabel(y)
+    plt.title(f"Regresión lineal: {y} vs {x}" + (f" ({entidad})" if entidad else ""))
+    plt.legend()
+
+    # Crear carpeta 'img' si no existe
+    os.makedirs("img", exist_ok=True)
+    plt.savefig(f"img/lr_{y}_{x}_{entidad if entidad else 'general'}.png")
+    plt.close()
+
+# --- cargando los datos de mi dataset ---
+df = pd.read_csv("practica1/INM_2025_limpia.csv", encoding="utf-8-sig")
+
+# Agrupar por año (por ejemplo)
+df_by_year = df.groupby(["anio", "entidad_federativa"])[["incidencia_delictiva"]].sum().reset_index()
+print_tabulate(df_by_year.head())
+
+# --- Aplicar regresión lineal ---
+# Ejemplo: ver cómo cambia la incidencia en Aguascalientes con los años
+linear_regression(df_by_year, "anio", "incidencia_delictiva", entidad="Aguascalientes")
