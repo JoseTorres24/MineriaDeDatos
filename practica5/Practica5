@@ -7,21 +7,25 @@ from tabulate import tabulate
 # --- Funciones auxiliares ---
 def print_tabulate(df: pd.DataFrame):
     print(tabulate(df, headers=df.columns, tablefmt="orgtbl"))
-
+# Función para regresión lineal y graficar con resultados estadísticos y R² incluido
 def linear_regression(df: pd.DataFrame, x: str, y: str, entidad: str = None):
     if entidad:
         df = df[df["entidad_federativa"] == entidad]
 
-    # Aseguramos que X es numérico
+    
     X = pd.to_numeric(df[x], errors='coerce')
     y_vals = df[y]
 
-    # Ordenar datos por X (para una gráfica limpia)
+    # ordenamos los datos por X para una mejor visualización porque tuve errores porque se me olvido ordenarlo
     df_sorted = pd.DataFrame({x: X, y: y_vals}).sort_values(by=x)
 
-    # Crear modelo lineal
+    # hacemos el modelo de regresion lineal
     model = sm.OLS(df_sorted[y], sm.add_constant(df_sorted[x])).fit()
-    
+    # por si tiene dudas de porque el modelo de regresion linea parece tan ordinario es que el dataset escala y de cae varias veces en en los anios 2020 y 2021 (pandemia) y solo limite con aguascientes, si lo hubiera (NO existe ) pero si lo huebiera echo con los demas estados habria vido problemas con los valores de R² y los resultados estadisticos
+    #para que el grafico como en las anteriores practicas no se vea tan feo
+
+
+
     # Mostrar resumen y R²
     print(model.summary())
     print(f"R² (coeficiente de determinación): {model.rsquared:.4f}")
