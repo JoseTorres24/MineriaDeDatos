@@ -46,10 +46,10 @@ def linear_regression(df: pd.DataFrame, x: str, y: str, entidad: str = None):
 # --- cargando los datos de mi dataset ---
 df = pd.read_csv("practica1/INM_2025_limpia.csv", encoding="utf-8-sig")
 
-# Agrupar por año (por ejemplo)
+# Agrupar por año (por ejemplo) aunque puede ser cualquier otra columna
 df_by_year = df.groupby(["anio", "entidad_federativa"])[["incidencia_delictiva"]].sum().reset_index()
 print_tabulate(df_by_year.head())
 
 # --- Aplicar regresión lineal ---
-# Ejemplo: ver cómo cambia la incidencia en Aguascalientes con los años
+# Ejemplo: ver cómo cambia la incidencia en Aguascalientes con los anios
 linear_regression(df_by_year, "anio", "incidencia_delictiva", entidad="Aguascalientes")
